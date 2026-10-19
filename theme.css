@@ -1,0 +1,486 @@
+/* ============================================================
+iNat Trees — herbarium sheet theme
+One layer over style.css. Loaded after it, so equal specificity here wins.
+Palette and type: paper and ink, canopy green, one serif for the Latin.
+============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300..700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&display=swap');
+
+:root {
+  --paper:      #faf8f2;
+  --paper-2:    #f3efe3;
+  --ink:        #1c2118;
+  --ink-soft:   #4a5145;
+  --ink-muted:  #6f7768;
+  --rule:       #dcd6c4;
+  --canopy:     #1f5136;
+  --canopy-deep:#163d29;
+  --leaf:       #6f9f2f;
+  --leaf-tint:  #eef3e2;
+  --clay:       #b4582f;
+  --slate:      #2f6f7f;
+  --moss:       #8aa88c;
+
+  /* remap the app's own tokens */
+  --primary-color:    var(--canopy);
+  --secondary-color:  var(--canopy-deep);
+  --background-color: var(--paper);
+  --text-color:       var(--ink);
+  --border-color:     var(--rule);
+}
+
+body.dark-theme {
+  --paper:      #14170f;
+  --paper-2:    #1b1f16;
+  --ink:        #eef1e6;
+  --ink-soft:   #c3c9b8;
+  --ink-muted:  #9aa38f;
+  --rule:       #2c3226;
+  --leaf:       #8fbf4a;
+  --leaf-tint:  #1f2a1a;
+  --clay:       #d98055;
+  --slate:      #6fa8bb;
+  --moss:       #9dbb9f;
+
+  --primary-color:    #235a3c;
+  --secondary-color:  #1a4630;
+  --background-color: var(--paper);
+  --text-color:       var(--ink);
+  --border-color:     var(--rule);
+}
+
+/* ---------- type ---------- */
+
+body {
+  font-family: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 16.5px;
+  line-height: 1.62;
+  color: var(--ink);
+  background-color: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, .card-header, .navbar-brand, .hallway-hud-title {
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+  letter-spacing: -0.005em;
+}
+
+h1 { font-weight: 600; }
+h2 { font-weight: 600; }
+h3, h4 { font-weight: 500; }
+
+.scientific-name, .hallway-card-name, em, i {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-style: italic;
+}
+
+.scientific-name { color: var(--ink-soft); }
+
+small, .text-muted, .info-text, .battle-stat-label, .spinner-progress {
+  color: var(--ink-muted) !important;
+}
+
+/* ---------- frame ---------- */
+
+body { min-height: 100%; }
+
+.navbar {
+  background-color: var(--canopy) !important;
+  border-bottom: 3px solid var(--leaf);
+  padding-block: 0.55rem;
+}
+
+body.dark-theme .navbar {
+  background-color: #10160f !important;
+  border-bottom-color: var(--leaf);
+}
+
+.navbar-brand {
+  color: #f7f4e9 !important;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.navbar .nav-link,
+.navbar .btn-link,
+.navbar small,
+.navbar .text-muted {
+  color: rgba(247, 244, 233, 0.82) !important;
+}
+
+.navbar .nav-link:hover { color: #fff !important; }
+
+.container {
+  max-width: 1180px;
+  padding-inline: clamp(14px, 3vw, 26px);
+}
+
+.card {
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background-color: var(--paper);
+  box-shadow: 0 1px 0 rgba(28, 33, 24, 0.04), 0 10px 30px -22px rgba(28, 33, 24, 0.55);
+  margin-bottom: 1.6rem;
+}
+
+body.dark-theme .card {
+  background-color: var(--paper-2);
+  border-color: var(--rule);
+  box-shadow: none;
+}
+
+.card-header {
+  background-color: transparent !important;
+  color: var(--ink) !important;
+  border-bottom: 1px solid var(--rule);
+  border-radius: 4px 4px 0 0 !important;
+  font-size: 1.18rem;
+  font-weight: 600;
+  padding: 0.85rem 1.1rem;
+  letter-spacing: 0.005em;
+}
+
+body.dark-theme .card-header {
+  background-color: transparent !important;
+  color: var(--ink) !important;
+}
+
+.card-body { padding: 1.15rem; }
+
+/* a hairline under section headings, herbarium-label style */
+.card-body > h2:first-child,
+.card-body > h3:first-child {
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 0.9rem;
+}
+
+hr { border-top: 1px solid var(--rule); opacity: 1; }
+
+/* ---------- controls ---------- */
+
+input, select, textarea, .form-control, .form-select {
+  background-color: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 8px 12px;
+  color: var(--ink);
+  font-family: inherit;
+  box-shadow: none !important;
+}
+
+body.dark-theme input,
+body.dark-theme select,
+body.dark-theme textarea,
+body.dark-theme .form-control,
+body.dark-theme .form-select {
+  background-color: #191d15;
+  border-color: var(--rule);
+  color: var(--ink);
+}
+
+input:focus, select:focus, textarea:focus,
+.form-control:focus, .form-select:focus {
+  border-color: var(--leaf);
+  outline: 2px solid color-mix(in srgb, var(--leaf) 35%, transparent);
+  outline-offset: 1px;
+}
+
+label, .form-label, .form-check-label {
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+
+button, .btn {
+  font-family: inherit;
+  font-weight: 600;
+  border-radius: 3px;
+  letter-spacing: 0.01em;
+}
+
+button:not(.btn-close):not(.hallway-breadcrumb-item):not(.hallway-card-close):not(.legend-remove) {
+  background-color: var(--canopy);
+  color: #f7f4e9;
+  border: 1px solid var(--canopy-deep);
+  box-shadow: none;
+}
+
+button:not(.btn-close):not(.hallway-breadcrumb-item):not(.hallway-card-close):not(.legend-remove):hover {
+  background-color: var(--leaf);
+  border-color: var(--leaf);
+  color: #14210c;
+}
+
+.btn-primary {
+  background-color: var(--canopy) !important;
+  border-color: var(--canopy-deep) !important;
+  color: #f7f4e9 !important;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--leaf) !important;
+  border-color: var(--leaf) !important;
+  color: #14210c !important;
+}
+
+.btn-outline-primary {
+  color: var(--canopy) !important;
+  border-color: var(--canopy) !important;
+  background-color: transparent !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--canopy) !important;
+  color: #f7f4e9 !important;
+}
+
+body.dark-theme .btn-outline-primary {
+  color: var(--leaf) !important;
+  border-color: var(--leaf) !important;
+}
+
+.btn-link { color: var(--canopy); }
+body.dark-theme .btn-link { color: var(--leaf); }
+
+/* the auth button no longer borrows iNaturalist's mark: an inline leaf */
+.inat-favicon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23f7f4e9' d='M12 2.6c4.2 2.6 6.6 5.7 6.6 9.3 0 4.4-3 7.6-6.6 9.5-3.6-1.9-6.6-5.1-6.6-9.5 0-3.6 2.4-6.7 6.6-9.3z'/%3E%3Cpath stroke='%231f5136' stroke-width='1.1' d='M12 5.4v13.2'/%3E%3C/svg%3E");
+  background-size: 17px 17px;
+  background-position: 11px center;
+}
+
+/* ---------- tabs ---------- */
+
+.nav-tabs {
+  border-bottom: 1px solid var(--rule);
+  gap: 2px;
+}
+
+.nav-tabs .nav-link {
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  color: var(--ink-soft);
+  font-weight: 500;
+  padding: 0.5rem 0.85rem;
+  margin-bottom: -1px;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: transparent;
+  border-color: transparent transparent var(--leaf);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.nav-tabs .nav-link:hover:not(.active) {
+  background-color: transparent;
+  border-color: transparent transparent var(--rule);
+  color: var(--ink);
+}
+
+body.dark-theme .nav-tabs .nav-link.active { color: var(--ink); }
+
+/* comparison tab dot */
+.nav-tabs .battle-tab .tab-title::before {
+  background: linear-gradient(to right, var(--clay) 50%, var(--slate) 50%);
+}
+
+/* ---------- panels and notes ---------- */
+
+.tree-info {
+  background-color: var(--paper-2);
+  border-left: 3px solid var(--leaf);
+  border-radius: 0 3px 3px 0;
+  color: var(--ink-soft);
+}
+
+.helpful-tips {
+  background-color: var(--leaf-tint);
+  border-left: 3px solid var(--leaf);
+  border-radius: 0 3px 3px 0;
+  padding: 0.9rem 1rem;
+  color: var(--ink-soft);
+}
+
+body.dark-theme .tree-info,
+body.dark-theme .helpful-tips,
+body.dark-theme pre,
+body.dark-theme .bg-light {
+  background-color: var(--paper-2) !important;
+  color: var(--ink-soft) !important;
+  border-color: var(--rule) !important;
+}
+
+.checklist-stats-panel {
+  background-color: var(--paper-2) !important;
+  border: 1px solid var(--rule) !important;
+}
+
+.dropdown-menu, .autocomplete-results {
+  background-color: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  box-shadow: 0 14px 34px -20px rgba(28, 33, 24, 0.7);
+}
+
+.dropdown-item, .autocomplete-item { color: var(--ink); }
+.dropdown-item:hover, .autocomplete-item:hover { background-color: var(--leaf-tint); }
+.dropdown-item.selected { background-color: var(--leaf-tint) !important; }
+
+.is-valid {
+  border-color: var(--leaf) !important;
+  background-color: color-mix(in srgb, var(--leaf) 10%, transparent) !important;
+}
+
+.progress { background-color: var(--paper-2); border-radius: 999px; }
+.progress-bar { background-color: var(--leaf); }
+
+.spinner {
+  border-color: color-mix(in srgb, var(--ink) 8%, transparent);
+  border-left-color: var(--leaf);
+}
+
+.spinner-text { color: var(--ink-muted); font-style: normal; }
+
+.badge.bg-primary, .badge.bg-success { background-color: var(--canopy) !important; }
+.badge.bg-secondary { background-color: var(--ink-muted) !important; }
+
+/* ---------- comparison: clay / slate / moss ---------- */
+
+.battle-summary { border: 1px solid var(--rule); box-shadow: none; }
+.battle-summary-header { background-color: var(--paper-2); border-bottom: 1px solid var(--rule); }
+.battle-user-avatar { background-color: var(--canopy); }
+.battle-user-1 .battle-user-avatar { background-color: var(--clay); }
+.battle-user-2 .battle-user-avatar { background-color: var(--slate); }
+
+.battle-progress { background-color: var(--paper-2); }
+.user1-bar { background-color: var(--clay); }
+.user2-bar { background-color: var(--slate); }
+.shared-bar { background-color: var(--moss); color: #14210c; }
+
+.vs-title .username-1 { background-color: color-mix(in srgb, var(--clay) 16%, transparent); color: var(--clay); }
+.vs-title .username-2 { background-color: color-mix(in srgb, var(--slate) 16%, transparent); color: var(--slate); }
+.vs-title .vs-badge { background-color: var(--paper-2); color: var(--ink-muted); }
+
+/* node and edge colours, light and dark */
+.user1-node, .user1-node a, .user1-node * { color: var(--clay) !important; }
+.user2-node, .user2-node a, .user2-node * { color: var(--slate) !important; }
+.shared-node, .shared-node a, .shared-node * { color: var(--moss) !important; }
+
+.markmap-container svg path { stroke: #b9bca9; }
+body.dark-theme .markmap-container svg path { stroke: #46503c; }
+.markmap-container svg path.user1-edge { stroke: var(--clay) !important; }
+.markmap-container svg path.user2-edge { stroke: var(--slate) !important; }
+.markmap-container svg path.shared-edge { stroke: var(--moss) !important; }
+
+body:not(.dark-theme) .markmap-container svg text,
+body:not(.dark-theme) .markmap-container svg tspan,
+body:not(.dark-theme) .markmap-container svg .markmap-node text { fill: #1c2118 !important; }
+body:not(.dark-theme) .markmap-container .markmap-foreign *:not(.user1-node):not(.user2-node):not(.shared-node) { color: #1c2118 !important; }
+body.dark-theme .markmap-container svg text,
+body.dark-theme .markmap-container svg tspan,
+body.dark-theme .markmap-container svg .markmap-node text { fill: #eef1e6 !important; }
+
+.markmap-container, #markmap {
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+body.dark-theme .markmap-container svg { background-color: var(--paper-2); }
+
+.taxon-tooltip {
+  background-color: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  box-shadow: 0 16px 36px -22px rgba(28, 33, 24, 0.8);
+}
+
+.taxon-tooltip-title { border-bottom: 1px solid var(--rule); }
+
+/* ---------- map furniture ---------- */
+
+.leaflet-control.map-title {
+  background: rgba(250, 248, 242, 0.96);
+  color: var(--ink);
+  border-radius: 3px;
+  border-left: 3px solid var(--canopy);
+  box-shadow: 0 8px 24px -16px rgba(28, 33, 24, 0.8);
+}
+
+.leaflet-control.missing-legend {
+  background: rgba(250, 248, 242, 0.96);
+  color: var(--ink);
+  border-radius: 3px;
+  box-shadow: 0 8px 24px -16px rgba(28, 33, 24, 0.8);
+}
+
+body.dark-theme .leaflet-control.missing-legend {
+  background: rgba(27, 31, 22, 0.94);
+  color: var(--ink);
+}
+
+/* ---------- 3D hallway keeps its night scene, re-accented ---------- */
+
+.hallway-scene { background: #0b0f09; }
+
+.hallway-hud-help span,
+.hallway-photo-progress,
+.hallway-breadcrumb-item {
+  background: rgba(11, 15, 9, 0.62);
+  border-color: rgba(238, 241, 230, 0.12);
+  color: #e6ecdd;
+}
+
+button.hallway-breadcrumb-item:hover {
+  background: rgba(35, 90, 60, 0.72);
+  border-color: rgba(143, 191, 74, 0.4);
+}
+
+.hallway-breadcrumb-item.is-current {
+  background: rgba(143, 191, 74, 0.26) !important;
+  border-color: rgba(143, 191, 74, 0.6) !important;
+  color: #f4f7ee !important;
+}
+
+.hallway-card-detail-inner {
+  background: linear-gradient(180deg, #131a11 0%, #182014 100%);
+  border-radius: 6px;
+  color: #eef1e6;
+}
+
+.hallway-card-meta { background: rgba(238, 241, 230, 0.05); }
+.hallway-card-meta .label { color: #9aa38f; }
+.hallway-card-meta .value { color: #eef1e6; }
+
+/* ---------- odds and ends ---------- */
+
+#markdownResult {
+  background-color: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  color: var(--ink-soft);
+}
+
+#treeTabs::-webkit-scrollbar-thumb { background-color: var(--rule); }
+
+::selection { background: color-mix(in srgb, var(--leaf) 30%, transparent); }
+
+.modal-content {
+  background-color: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  color: var(--ink);
+}
+
+body.dark-theme .modal-content { background-color: var(--paper-2); }
+
+@media (max-width: 768px) {
+  body { font-size: 16px; }
+  .navbar-brand { font-size: 1.15rem; }
+  .card-header { font-size: 1.06rem; padding: 0.7rem 0.9rem; }
+  .card-body { padding: 0.95rem; }
+}
