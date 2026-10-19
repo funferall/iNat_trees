@@ -32,25 +32,27 @@ jobs:
             --exclude 'generated-icon.png' \
             ./ dist/
 
-      - name: Inject the theme stylesheet
+      - name: Inject the theme stylesheets
         run: |
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
+
+          THEME = (
+              '  <link rel="stylesheet" href="theme.css">\n'
+              '  <link rel="stylesheet" href="theme-app.css">\n'
+          )
+
           for name in ('index.html', 'landing.html'):
               p = Path('dist') / name
               if not p.exists():
                   continue
               html = p.read_text(encoding='utf-8')
-              if 'theme.css' in html or '</head>' not in html:
-                  continue
-              html = html.replace(
-                  '</head>',
-                  '  <link rel="stylesheet" href="theme.css">\n</head>',
-                  1,
-              )
+              if 'theme.css' not in html and '</head>' in html:
+                  html = html.replace('</head>', THEME + '</head>', 1)
+                  print(f'theme injected into {name}')
+              html = html.replace('content="#3fac8c"', 'content="#1f5136"')
               p.write_text(html, encoding='utf-8')
-              print(f'theme injected into {name}')
           PY
 
       - uses: actions/configure-pages@v5
