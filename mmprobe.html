@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>markmap probe</title>
+<style>body{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;margin:0;padding:12px}#map{width:640px;height:320px;border:1px solid #999}pre{white-space:pre-wrap;font:12px/1.4 ui-monospace,monospace;background:#f4f4f4;padding:8px}</style>
+</head>
+<body>
+<div id="map"><svg id="svg" width="640" height="320"></svg></div>
+<pre id="log">loading...</pre>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18.12/dist/browser/index.js"></script>
+<script>
+var out=[];function say(s){out.push(s);document.getElementById('log').textContent=out.join('\n');}
+window.addEventListener('error',function(e){say('window.error: '+e.message);});
+window.addEventListener('unhandledrejection',function(e){say('rejection: '+(e.reason&&e.reason.message||e.reason));});
+(async function(){try{
+say('d3='+(window.d3&&d3.version)+' markmap='+!!window.markmap+' version='+(window.markmap&&window.markmap.Markmap&&(window.markmap.Markmap.version||'n/a')));
+var svg=document.getElementById('svg');var data={root:{content:'# S',children:[{content:'- A'},{content:'- B'}]}};
+var mm=window.markmap.Markmap.create(svg,{autoFit:true,htmlLabels:true},data);
+say('create ok, state keys: '+Object.keys(mm.state||{}).join(','));
+await new Promise(function(r){setTimeout(r,800)});
+say('len='+svg.innerHTML.length+' g='+svg.querySelectorAll('g').length);
+if(mm.setData){try{await mm.setData(data);}catch(e){say('setData err '+e);}say('after setData len='+svg.innerHTML.length+' state='+Object.keys(mm.state||{}).join(','));}
+say('done');
+}catch(e){say('THROW '+e.message);}})();
+</script>
+</body>
+</html>
