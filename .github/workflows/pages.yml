@@ -15,11 +15,12 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # markmap-view@0.18.12 (current "latest" on jsdelivr) silently renders an
-  # empty canvas: create() sets data=false and emits no nodes, no error.
-  # Pin the last known-good pair until index.html is edited in-place.
-  MARKMAP_VIEW: 0.18.10
-  MARKMAP_LIB: 0.18.10
+  # Pin for reproducible builds. Measured on the live page: markmap-view
+  # 0.18.10 renders nothing (data=false, 55-byte svg, no error) with either
+  # markmap-lib version; view 0.18.12 renders fine with both. So 0.18.12 is
+  # the good pair — the earlier blank trees were NOT a CDN version skew.
+  MARKMAP_VIEW: 0.18.12
+  MARKMAP_LIB: 0.18.12
 
 jobs:
   build:
