@@ -29,31 +29,22 @@ jobs:
             --exclude '.github' \
             --exclude 'dist' \
             --exclude 'attached_assets' \
-            --exclude 'generated-icon.png' \
             ./ dist/
 
       - name: Inject the theme stylesheets
         run: |
           set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-
-          THEME = (
-              '  <link rel="stylesheet" href="theme.css">\n'
-              '  <link rel="stylesheet" href="theme-app.css">\n'
-          )
-
-          for name in ('index.html', 'landing.html'):
-              p = Path('dist') / name
-              if not p.exists():
-                  continue
-              html = p.read_text(encoding='utf-8')
-              if 'theme.css' not in html and '</head>' in html:
-                  html = html.replace('</head>', THEME + '</head>', 1)
-                  print(f'theme injected into {name}')
-              html = html.replace('content="#3fac8c"', 'content="#1f5136"')
-              p.write_text(html, encoding='utf-8')
-          PY
+          for f in index.html landing.html; do
+            [ -f "dist/$f" ] || continue
+            if grep -q 'theme-app.css' "dist/$f"; then
+              echo "theme already present in $f"
+            else
+              perl -0pi -e 's|</head>|<link rel="stylesheet" href="theme.css">\n<link rel="stylesheet" href="theme-app.css">\n</head>|i' "dist/$f"
+            fi
+            perl -0pi -e 's|content="#3fac8c"|content="#1f5136"|g' "dist/$f"
+            grep -q 'theme-app.css' "dist/$f" || { echo "::error::theme injection failed for $f"; exit 1; }
+            echo "theme injected into $f"
+          done
 
       - uses: actions/configure-pages@v5
 
