@@ -47,13 +47,6 @@ var branch = path.split('.').slice(0, 3).join('.');
 return PALETTE[hash(branch) % PALETTE.length];
 }
 
-// Accept: bare node (what the app builds), array colour (index by depth), or
-// nothing at all. Anything else falls back to the frozen default.
-function normalizeColor(c, depth) {
-if (typeof c === 'function') return c(node); // not reached; see install()
-return PALETTE[0];
-}
-
 var tries = 0;
 
 function install() {
