@@ -1,5 +1,8 @@
-
 import { fetchCurrentUser, startLogin } from './auth.js';
+
+// Drawing defaults for the tree renderer (palette, spacing). Dynamic on purpose:
+// if it ever fails, the login UI must still work.
+import('./tree-display.js').catch(() => {});
 
 function renderAuthUI() {
   const btn = document.getElementById('inatLogin');
