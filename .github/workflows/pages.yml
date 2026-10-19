@@ -43,8 +43,10 @@ jobs:
           set -euo pipefail
           for f in dist/*.html; do
             grep -q 'cdn.jsdelivr.net/npm/markmap-view' "$f" || continue
-            perl -0pi -e "s|markmap-view\"|markmap-view@${MARKMAP_VIEW}\"|g; s|markmap-lib\"|markmap-lib@${MARKMAP_LIB}\"|g" "$f"
-            grep -q "markmap-view@${MARKMAP_VIEW}" "$f" || { echo "::error::markmap pin failed for $f"; exit 1; }
+            sed -i "s#npm/markmap-view\"#npm/markmap-view@${MARKMAP_VIEW}\"#g" "$f"
+            sed -i "s#npm/markmap-lib\"#npm/markmap-lib@${MARKMAP_LIB}\"#g" "$f"
+            grep -q "markmap-view@${MARKMAP_VIEW}" "$f" || { echo "::error::markmap-view pin failed for $f"; exit 1; }
+            grep -q "markmap-lib@${MARKMAP_LIB}" "$f" || { echo "::error::markmap-lib pin failed for $f"; exit 1; }
             echo "pinned markmap in $f"
           done
 
