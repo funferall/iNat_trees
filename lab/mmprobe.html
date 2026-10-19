@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>markmap probe</title>
+<style>body{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;margin:0;padding:12px}#map{width:640px;height:320px;border:1px solid #999}pre{white-space:pre-wrap;font:12px/1.4 ui-monospace,monospace;background:#f4f4f4;padding:8px}</style>
+</head>
+<body>
+<div id="map"><svg id="svg" width="640" height="320"></svg></div>
+<pre id="log">loading...</pre>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18.12/dist/browser/index.js"></script>
+<script>
+var out=[];function say(s){out.push(s);document.getElementById('log').textContent=out.join('\n');}
+window.addEventListener('error',function(e){say('window.error: '+e.message);});
+window.addEventListener('unhandledrejection',function(e){say('rejection: '+(e.reason&&e.reason.message||e.reason));});
+function probe(label,svg){try{var mm=window.markmap.Markmap.create(svg,{autoFit:true,htmlLabels:true},{root:{content:'# S',children:[{content:'- A'},{content:'- B'}]}});say(label+' create ok state='+Object.keys(mm.state||{}).join(','));return mm;}catch(e){say(label+' THROW '+e.message);return null;}}
+(async function(){
+say('d3='+(window.d3&&d3.version)+' markmap='+!!window.markmap+' version='+(window.markmap&&window.markmap.Markmap&&(window.markmap.Markmap.version||'n/a')));
+var svg=document.getElementById('svg');
+probe('plain',svg);
+await new Promise(function(r){setTimeout(r,900)});
+say('len='+svg.innerHTML.length+' nodes='+svg.querySelectorAll('.markmap-node').length);
+say('tried setData');
+var s2=document.createElementNS('http://www.w3.org/2000/svg','svg');s2.setAttribute('width','640');s2.setAttribute('height','320');document.getElementById('map').appendChild(s2);
+var mm2=window.markmap.Markmap.create(s2,{autoFit:true});
+try{var p=mm2.setData({root:{content:'# S',children:[{content:'- A'},{content:'- B'}]}});await p;say('setData resolved');}catch(e){say('setData err '+e);}
+await new Promise(function(r){setTimeout(r,900)});
+say('s2 len='+s2.innerHTML.length+' state='+Object.keys(mm2.state||{}).join(',')+' hasData='+!!(mm2.state&&mm2.state.data));
+say('done');
+})();
+</script>
+</body>
+</html>
